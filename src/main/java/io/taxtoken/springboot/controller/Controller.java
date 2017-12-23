@@ -51,12 +51,16 @@ public class Controller {
 	}
 	
 	@RequestMapping(value = "/user/{name}", method = RequestMethod.PUT) 
-	public @ResponseBody ResponseEntity<?> putUser(@PathVariable("name") String name) {
+	public @ResponseBody ResponseEntity<?> putUser(@PathVariable("name") String name, @RequestBody User user) {
 		int id = Service.findIdByName(name);
-		if( !(Service.updateUser(Service.users[id])) ){
+		
+		if( id == -1 ){
 			return new ResponseEntity<String>("Error updating user.", HttpStatus.CONFLICT);
 		}
-		return new ResponseEntity<Object>(Service.users[Service.findIdByName(name)], HttpStatus.OK);
+		
+		Service.users[id].setBirthday(user.getBirthday());
+		Service.users[id].setAge(user.getAge());
+		return new ResponseEntity<Object>(Service.users[id], HttpStatus.OK);
 	}
 	
 }
