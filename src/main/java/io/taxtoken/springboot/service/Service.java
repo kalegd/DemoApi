@@ -1,98 +1,54 @@
 package io.taxtoken.springboot.service;
 
+import java.util.HashMap;
+
 import io.taxtoken.springboot.dto.User;
 
 public class Service {
 
 	public static String URL = "TaxToken.io";
 	public static User[] users = new User[1];
+	public static HashMap<String,User> users2 = new HashMap<String,User>();
 	public static int numberOfUsers = 0;
 
 	public static String getUrl() {
 		return URL;
 	}
 	
-	public static int findIdByName(String name) {
-		int id = -1;
-
-		for(int i = 0; i < numberOfUsers; i++) {
-			if(name.equals(users[i].getName())) {
-				id = i;
-			}
-		}
-		
-		return id;
-	}
-	
 	public static String findBirthdayByName(String name) {
-		int id = 0;
-		boolean found = false;
-
-		for(int i = 0; i < numberOfUsers; i++) {
-			if(name.equals(users[i].getName())) {
-				found = true;
-				id = i;
-			}
+		if(users2.containsKey(name)) {
+			return users2.get(name).getBirthday();
+		} else {
+			return null;
 		}
-		
-		return (found) ? users[id].getBirthday() : null;
 	}
 	
 	public static int findAgeByName(String name) {
-		int id = 0;
-		boolean found = false;
-
-		for(int i = 0; i < numberOfUsers; i++) {
-			if(name.equals(users[i].getName())) {
-				found = true;
-				id = i;
-			}
+		if(users2.containsKey(name)) {
+			return users2.get(name).getAge();
+		} else {
+			return 0;
 		}
-		
-		return (found) ? users[id].getAge() : 0;
 	}
 
 	public static boolean addUser(User user) {
-		
-		for(int i = 0; i < numberOfUsers; i++) {
-			if(user.getName().equals(users[i].getName())) {
-				return false;
-			}
+		if(users2.containsKey(user.getName())) {
+			return false;
+		} else {
+			users2.put(user.getName(), user);
+			return true;
 		}
-		
-		if(users.length == numberOfUsers) {
-			User[] tempUsers = new User[users.length * 2];
-			for(int i = 0; i < users.length; i++) {
-				tempUsers[i] = users[i];
-			}
-			users = new User[tempUsers.length];
-			users = tempUsers;
-		}
-		
-		users[numberOfUsers] = user;
-		numberOfUsers++;
-		return true;
 	}
 
 	public static boolean updateUser(User user) {
-		int id = 0;
-		boolean found = false;
-
-		for(int i = 0; i < numberOfUsers; i++) {
-			if(user.getName().equals(users[i].getName())) {
-				found = true;
-				id = i;
-			}
-		}
-		if(!(found))
+		if(users2.containsKey(user.getName())) {
+			User u1 = users2.get(user.getName());
+			u1.setBirthday(user.getBirthday());
+			u1.setAge(user.getAge());
+			return true;
+		} else {
 			return false;
-		
-		users[id].setName(user.getName());
-		users[id].setBirthday(user.getBirthday());
-		users[id].setAge(user.getAge());
-		numberOfUsers++;
-		return true;
-		
+		}
 	}
 
 }
