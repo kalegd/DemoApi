@@ -43,16 +43,20 @@ public class Controller {
     }
 	
 	@RequestMapping(value = "/user", method = RequestMethod.POST)
-	public ResponseEntity<User> postUser(@RequestBody User user) {
-		
+	public ResponseEntity<?> postUser(@RequestBody User user) {
+		if( !(Service.addUser(user)) ){
+			return new ResponseEntity<String>("Error adding user.", HttpStatus.CONFLICT);
+		}
 	    return new ResponseEntity<User>(user, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/user/{name}", method = RequestMethod.PUT) 
-	public @ResponseBody ResponseEntity<?> updateUser(@PathVariable("name") String name, @RequestBody User user) {
-			
-		user.setName(name);
-		return new ResponseEntity<Object>(user, HttpStatus.OK);
+	public @ResponseBody ResponseEntity<?> putUser(@PathVariable("name") String name) {
+		int id = Service.findIdByName(name);
+		if( !(Service.updateUser(Service.users[id])) ){
+			return new ResponseEntity<String>("Error updating user.", HttpStatus.CONFLICT);
+		}
+		return new ResponseEntity<Object>(Service.users[Service.findIdByName(name)], HttpStatus.OK);
 	}
 	
 }
