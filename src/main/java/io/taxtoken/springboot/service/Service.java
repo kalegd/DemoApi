@@ -74,27 +74,6 @@ public class Service {
 		return true;
 	}
 
-	public static boolean updateUsers(User user) {
-		int id = 0;
-		boolean found = false;
-
-		for(int i = 0; i < numberOfUsers; i++) {
-			if(user.getName().equals(users[i].getName())) {
-				found = true;
-				id = i;
-			}
-		}
-		
-		if(!(found))
-			return false;
-		
-		users[id].setName(user.getName());
-		users[id].setBirthday(user.getBirthday());
-		users[id].setAge(user.getAge());
-		numberOfUsers++;
-		return true;
-	}
-
 	public static boolean updateUser(User user) {
 		int id = 0;
 		boolean found = false;
