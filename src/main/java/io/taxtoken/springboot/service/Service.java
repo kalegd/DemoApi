@@ -1,5 +1,7 @@
 package io.taxtoken.springboot.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 //import java.util.HashMap;
 
 import io.taxtoken.springboot.dto.User;
@@ -7,15 +9,17 @@ import io.taxtoken.springboot.repository.UserRepository;
 
 public class Service {
 
-	public static String URL = "TaxToken.io";
+	public String URL = "TaxToken.io";
 //	public static HashMap<String,User> users = new HashMap<String,User>();
-	public static UserRepository repo;
+	
+	@Autowired
+	public UserRepository repo;
 
-	public static String getUrl() {
+	public String getUrl() {
 		return URL;
 	}
 	
-	public static String findBirthdayByName(String name) {
+	public String findBirthdayByName(String name) {
 		if(repo.findByName(name) == null) {
 			return null;
 		} else {
@@ -23,7 +27,7 @@ public class Service {
 		}
 	}
 	
-	public static int findAgeByName(String name) {
+	public int findAgeByName(String name) {
 		if(repo.findByName(name) == null) {
 			return 0;
 		} else {
@@ -31,16 +35,16 @@ public class Service {
 		}
 	}
 
-	public static boolean addUser(User user) {
+	public boolean addUser(User user) {
 		if(repo.findByName(user.getName()) == null) {
-			return false;
-		} else {
 			repo.save(user);
 			return true;
+		} else {
+			return false;
 		}
 	}
 
-	public static boolean updateUser(User user) {
+	public boolean updateUser(User user) {
 		if(repo.findByName(user.getName()) == null) {
 			return false;
 		} else {
