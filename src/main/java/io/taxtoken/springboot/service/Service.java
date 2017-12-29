@@ -16,7 +16,7 @@ public class Service {
 	}
 	
 	public static String findBirthdayByName(String name) {
-		if(repo.exists(repo.findByName(name).getId())) {
+		if(repo.findByName(name) == null) {
 			return repo.findByName(name).getBirthday();
 		} else {
 			return null;
@@ -24,7 +24,7 @@ public class Service {
 	}
 	
 	public static int findAgeByName(String name) {
-		if(repo.exists(repo.findByName(name).getId())) {
+		if(repo.findByName(name) == null) {
 			return repo.findByName(name).getAge();
 		} else {
 			return 0;
@@ -32,7 +32,7 @@ public class Service {
 	}
 
 	public static boolean addUser(User user) {
-		if(repo.exists(repo.findByName(user.getName()).getId())) {
+		if(repo.findByName(user.getName()) == null) {
 			return false;
 		} else {
 			repo.save(user);
@@ -41,7 +41,7 @@ public class Service {
 	}
 
 	public static boolean updateUser(User user) {
-		if(repo.exists(repo.findByName(user.getName()).getId())) {
+		if(repo.findByName(user.getName()) == null) {
 			User u1 = repo.findByName(user.getName());
 			u1.setId(user.getId());
 			u1.setBirthday(user.getBirthday());
