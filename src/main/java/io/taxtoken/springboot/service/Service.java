@@ -17,17 +17,17 @@ public class Service {
 	
 	public static String findBirthdayByName(String name) {
 		if(repo.findByName(name) == null) {
-			return repo.findByName(name).getBirthday();
-		} else {
 			return null;
+		} else {
+			return repo.findByName(name).getBirthday();
 		}
 	}
 	
 	public static int findAgeByName(String name) {
 		if(repo.findByName(name) == null) {
-			return repo.findByName(name).getAge();
-		} else {
 			return 0;
+		} else {
+			return repo.findByName(name).getAge();
 		}
 	}
 
@@ -42,14 +42,14 @@ public class Service {
 
 	public static boolean updateUser(User user) {
 		if(repo.findByName(user.getName()) == null) {
+			return false;
+		} else {
 			User u1 = repo.findByName(user.getName());
 			u1.setId(user.getId());
 			u1.setBirthday(user.getBirthday());
 			u1.setAge(user.getAge());
 			repo.save(u1);
 			return true;
-		} else {
-			return false;
 		}
 	}
 
