@@ -1,50 +1,52 @@
 package io.taxtoken.springboot.service;
 
-import java.util.HashMap;
+//import java.util.HashMap;
 
 import io.taxtoken.springboot.dto.User;
+import io.taxtoken.springboot.repository.UserRepository;
 
 public class Service {
 
 	public static String URL = "TaxToken.io";
-	public static User[] users = new User[1];
-	public static HashMap<String,User> users2 = new HashMap<String,User>();
-	public static int numberOfUsers = 0;
+//	public static HashMap<String,User> users = new HashMap<String,User>();
+	public static UserRepository repo;
 
 	public static String getUrl() {
 		return URL;
 	}
 	
 	public static String findBirthdayByName(String name) {
-		if(users2.containsKey(name)) {
-			return users2.get(name).getBirthday();
+		if(repo.exists(repo.findByName(name).getId())) {
+			return repo.findByName(name).getBirthday();
 		} else {
 			return null;
 		}
 	}
 	
 	public static int findAgeByName(String name) {
-		if(users2.containsKey(name)) {
-			return users2.get(name).getAge();
+		if(repo.exists(repo.findByName(name).getId())) {
+			return repo.findByName(name).getAge();
 		} else {
 			return 0;
 		}
 	}
 
 	public static boolean addUser(User user) {
-		if(users2.containsKey(user.getName())) {
+		if(repo.exists(repo.findByName(user.getName()).getId())) {
 			return false;
 		} else {
-			users2.put(user.getName(), user);
+			repo.save(user);
 			return true;
 		}
 	}
 
 	public static boolean updateUser(User user) {
-		if(users2.containsKey(user.getName())) {
-			User u1 = users2.get(user.getName());
+		if(repo.exists(repo.findByName(user.getName()).getId())) {
+			User u1 = repo.findByName(user.getName());
+			u1.setId(user.getId());
 			u1.setBirthday(user.getBirthday());
 			u1.setAge(user.getAge());
+			repo.save(u1);
 			return true;
 		} else {
 			return false;
